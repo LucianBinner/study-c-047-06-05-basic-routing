@@ -1,4 +1,9 @@
-import { NavLink, Outlet, useSearchParams } from 'react-router-dom';
+import {
+  NavLink,
+  Outlet,
+  useLocation,
+  useSearchParams,
+} from 'react-router-dom';
 import { getInvoices } from '../data';
 
 export default function Invoices() {
@@ -37,7 +42,7 @@ export default function Invoices() {
             return name.startsWith(filter.toLowerCase());
           })
           .map((invoice) => (
-            <NavLink
+            <QueryNavLink
               style={({ isActive }) => {
                 return {
                   display: 'block',
@@ -49,10 +54,18 @@ export default function Invoices() {
               key={invoice.number}
             >
               {invoice.name}
-            </NavLink>
+            </QueryNavLink>
           ))}
       </nav>
       <Outlet /> {/* Renderiza as rotas filhas */}
     </div>
   );
+}
+
+function QueryNavLink({ to, ...props }) {
+  let location = useLocation();
+  {
+    /* useLocation - pega todos os parametros da url */
+  }
+  return <NavLink to={to + location.search} {...props} />;
 }
